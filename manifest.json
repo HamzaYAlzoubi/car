@@ -1,0 +1,17 @@
+{
+  "name": "مدير قطع السيارة",
+  "short_name": "سيارتي",
+  "description": "تطبيق لإدارة تكاليف قطع غيار السيارة",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#020817",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/1995/1995470.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
