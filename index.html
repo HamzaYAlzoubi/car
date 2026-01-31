@@ -1,146 +1,368 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#020817">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#020817" />
     <title>قطع السيارة</title>
     <style>
-        :root {
-            --background: #ffffff;
-            --foreground: #020817;
-            --muted: #f1f5f9;
-            --muted-foreground: #64748b;
-            --border: #e2e8f0;
-            --input: #e2e8f0;
-            --primary: #020817;
-            --primary-foreground: #ffffff;
-            --radius: 0.5rem;
-        }
+      :root {
+        --background: #ffffff;
+        --foreground: #020817;
+        --muted: #f1f5f9;
+        --muted-foreground: #64748b;
+        --border: #e2e8f0;
+        --input: #e2e8f0;
+        --primary: #020817;
+        --primary-foreground: #ffffff;
+        --radius: 0.5rem;
+      }
 
-        body {
-            font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--background);
-            color: var(--foreground);
-            margin: 0; padding: 0;
-            -webkit-tap-highlight-color: transparent;
-        }
+      body {
+        font-family:
+          -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto,
+          sans-serif;
+        background-color: var(--background);
+        color: var(--foreground);
+        margin: 0;
+        padding: 0;
+        -webkit-tap-highlight-color: transparent;
+      }
 
-        .container { max-width: 600px; margin: 0 auto; padding: 1.5rem 1rem; }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 1.5rem 1rem;
+      }
 
-        .header {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem;
-        }
-        .header h1 { font-size: 1.25rem; font-weight: 700; margin: 0; }
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 1rem;
+      }
+      .header h1 {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin: 0;
+      }
 
-        .btn {
-            display: inline-flex; align-items: center; justify-content: center;
-            border-radius: var(--radius); font-size: 0.875rem; font-weight: 500;
-            height: 2.25rem; padding: 0 0.75rem; cursor: pointer;
-            border: 1px solid var(--border); background: var(--background); color: var(--foreground);
-        }
-        .btn-primary { background: var(--primary); color: var(--primary-foreground); border: none; }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--radius);
+        font-size: 0.875rem;
+        font-weight: 500;
+        height: 2.25rem;
+        padding: 0 0.75rem;
+        cursor: pointer;
+        border: 1px solid var(--border);
+        background: var(--background);
+        color: var(--foreground);
+      }
+      .btn-primary {
+        background: var(--primary);
+        color: var(--primary-foreground);
+        border: none;
+      }
 
-        .section { margin-bottom: 2rem; }
-        .section-title { font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem; display: flex; justify-content: space-between; }
+      .section {
+        margin-bottom: 2rem;
+      }
+      .section-title {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+        display: flex;
+        justify-content: space-between;
+      }
 
-        .table-container { border: 1px solid var(--border); border-radius: var(--radius); overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
-        th { background: var(--muted); padding: 0.75rem; color: var(--muted-foreground); text-align: right; }
-        td { padding: 0.75rem; border-bottom: 1px solid var(--border); }
-        
-        .modal-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); z-index: 50; justify-content: center; align-items: center;
-        }
-        .modal-content { background: var(--background); padding: 1.5rem; width: 85%; max-width: 350px; border-radius: var(--radius); }
+      .table-container {
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        overflow-x: auto;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.875rem;
+      }
+      th {
+        background: var(--muted);
+        padding: 0.75rem;
+        color: var(--muted-foreground);
+        text-align: right;
+      }
+      td {
+        padding: 0.75rem;
+        border-bottom: 1px solid var(--border);
+      }
 
-        .form-group { margin-bottom: 1rem; }
-        label { display: block; font-size: 0.75rem; font-weight: 600; margin-bottom: 0.25rem; }
-        input, select { width: 100%; height: 2.5rem; border: 1px solid var(--input); border-radius: var(--radius); padding: 0 0.5rem; box-sizing: border-box; }
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(4px);
+        z-index: 50;
+        justify-content: center;
+        align-items: center;
+      }
+      .modal-content {
+        background: var(--background);
+        padding: 1.5rem;
+        width: 85%;
+        max-width: 350px;
+        border-radius: var(--radius);
+      }
 
-        .summary-card {
-            background: var(--primary); color: var(--primary-foreground);
-            padding: 1rem; border-radius: var(--radius); display: flex; justify-content: space-around;
-        }
-        .summary-item { text-align: center; }
-        .summary-val { display: block; font-size: 1.1rem; font-weight: 700; }
-        .summary-lbl { font-size: 0.7rem; opacity: 0.8; }
+      .form-group {
+        margin-bottom: 1rem;
+      }
+      label {
+        display: block;
+        font-size: 0.75rem;
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+      }
+      input,
+      select {
+        width: 100%;
+        height: 2.5rem;
+        border: 1px solid var(--input);
+        border-radius: var(--radius);
+        padding: 0 0.5rem;
+        box-sizing: border-box;
+      }
+
+      .summary-card {
+        background: var(--primary);
+        color: var(--primary-foreground);
+        padding: 1rem;
+        border-radius: var(--radius);
+        display: flex;
+        justify-content: space-around;
+      }
+      .summary-item {
+        text-align: center;
+      }
+      .summary-val {
+        display: block;
+        font-size: 1.1rem;
+        font-weight: 700;
+      }
+      .summary-lbl {
+        font-size: 0.7rem;
+        opacity: 0.8;
+      }
+
+      /* Purchased Items Styles */
+      .custom-checkbox {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+        accent-color: var(--primary);
+        margin: 0;
+      }
+      .purchased-row td {
+        opacity: 0.5;
+        text-decoration: line-through;
+        background: var(--muted);
+      }
+      .purchased-section {
+        margin-top: 1.5rem;
+        border: 1px dashed var(--border);
+        border-radius: var(--radius);
+        overflow: hidden;
+      }
+      .purchased-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        background: var(--muted);
+        cursor: pointer;
+        user-select: none;
+      }
+      .purchased-header:hover {
+        background: #e2e8f0;
+      }
+      .purchased-header h4 {
+        margin: 0;
+        font-size: 0.875rem;
+        color: var(--muted-foreground);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .purchased-content {
+        display: none;
+      }
+      .purchased-content.show {
+        display: block;
+      }
+      .purchased-badge {
+        background: var(--primary);
+        color: var(--primary-foreground);
+        padding: 0.1rem 0.5rem;
+        border-radius: 999px;
+        font-size: 0.7rem;
+      }
+      .chevron {
+        transition: transform 0.2s ease;
+        display: inline-block;
+      }
+      .chevron.open {
+        transform: rotate(180deg);
+      }
     </style>
-</head>
-<body>
-
+  </head>
+  <body>
     <div class="container">
-        <header class="header">
-            <h1>قطع السيارة</h1>
-            <div style="display: flex; gap: 0.5rem;">
-                <button class="btn" onclick="openCatModal()">الأقسام</button>
-                <button class="btn btn-primary" onclick="openItemModal()">+ إضافة</button>
-            </div>
-        </header>
-        <div id="content-area"></div>
+      <header class="header">
+        <h1>قطع السيارة</h1>
+        <div style="display: flex; gap: 0.5rem">
+          <button class="btn" onclick="openCatModal()">الأقسام</button>
+          <button class="btn btn-primary" onclick="openItemModal()">
+            + إضافة
+          </button>
+        </div>
+      </header>
+      <div id="content-area"></div>
     </div>
 
     <div id="itemModal" class="modal-overlay">
-        <div class="modal-content">
-            <h3 id="modalTitle" style="margin:0 0 1rem 0">القطعة</h3>
-            <input type="hidden" id="editItemId">
-            <div class="form-group"><label>القسم</label><select id="itemCatSelect"></select></div>
-            <div class="form-group"><label>اسم القطعة</label><input type="text" id="itemName"></div>
-            <div style="display: flex; gap: 0.5rem;">
-                <div class="form-group" style="flex:1"><label>متوقع</label><input type="number" id="itemExp"></div>
-                <div class="form-group" style="flex:1"><label>فعلي</label><input type="number" id="itemAct"></div>
-            </div>
-            <button class="btn btn-primary" style="width:100%" onclick="saveItem()">حفظ</button>
-            <button class="btn" style="width:100%; margin-top:0.5rem" onclick="closeModal('itemModal')">إلغاء</button>
+      <div class="modal-content">
+        <h3 id="modalTitle" style="margin: 0 0 1rem 0">القطعة</h3>
+        <input type="hidden" id="editItemId" />
+        <div class="form-group">
+          <label>القسم</label
+          ><select id="itemCatSelect"></select>
         </div>
+        <div class="form-group">
+          <label>اسم القطعة</label><input type="text" id="itemName" />
+        </div>
+        <div style="display: flex; gap: 0.5rem">
+          <div class="form-group" style="flex: 1">
+            <label>متوقع</label><input type="number" id="itemExp" />
+          </div>
+          <div class="form-group" style="flex: 1">
+            <label>فعلي</label><input type="number" id="itemAct" />
+          </div>
+        </div>
+        <button
+          class="btn btn-primary"
+          style="width: 100%"
+          onclick="saveItem()"
+        >
+          حفظ
+        </button>
+        <button
+          class="btn"
+          style="width: 100%; margin-top: 0.5rem"
+          onclick="closeModal('itemModal')"
+        >
+          إلغاء
+        </button>
+      </div>
     </div>
 
     <div id="catModal" class="modal-overlay">
-        <div class="modal-content">
-            <h3 style="margin:0 0 1rem 0">الأقسام</h3>
-            <div id="catListDisplay" style="margin-bottom: 1rem;"></div>
-            <div style="display: flex; gap: 0.5rem;">
-                <input type="text" id="newCatName" placeholder="جديد..">
-                <button class="btn btn-primary" onclick="addNewCategory()">+</button>
-            </div>
-            <button class="btn" style="width:100%; margin-top:1rem" onclick="closeModal('catModal')">إغلاق</button>
+      <div class="modal-content">
+        <h3 style="margin: 0 0 1rem 0">الأقسام</h3>
+        <div id="catListDisplay" style="margin-bottom: 1rem"></div>
+        <div style="display: flex; gap: 0.5rem">
+          <input type="text" id="newCatName" placeholder="جديد.." />
+          <button class="btn btn-primary" onclick="addNewCategory()">+</button>
         </div>
+        <button
+          class="btn"
+          style="width: 100%; margin-top: 1rem"
+          onclick="closeModal('catModal')"
+        >
+          إغلاق
+        </button>
+      </div>
     </div>
 
     <script>
-        let items = JSON.parse(localStorage.getItem('sh_items')) || [];
-        let categories = JSON.parse(localStorage.getItem('sh_cats')) || ['بودي', 'غرفة', 'ميكانيك'];
+      let items = JSON.parse(localStorage.getItem("sh_items")) || [];
+      let categories = JSON.parse(localStorage.getItem("sh_cats")) || [
+        "بودي",
+        "غرفة",
+        "ميكانيك",
+      ];
 
-        function saveData() {
-            localStorage.setItem('sh_items', JSON.stringify(items));
-            localStorage.setItem('sh_cats', JSON.stringify(categories));
-            render();
-        }
+      function saveData() {
+        localStorage.setItem("sh_items", JSON.stringify(items));
+        localStorage.setItem("sh_cats", JSON.stringify(categories));
+        render();
+      }
 
         function render() {
             const area = document.getElementById('content-area');
             area.innerHTML = '';
             let gExp = 0, gAct = 0;
+            let purchasedItems = [];
 
             categories.forEach(cat => {
-                const catItems = items.filter(i => i.category === cat);
+                const catItems = items.filter(i => i.category === cat && !i.purchased);
+                const catPurchased = items.filter(i => i.category === cat && i.purchased);
+                purchasedItems = purchasedItems.concat(catPurchased);
+                
                 let cExp = 0, cAct = 0;
                 let rows = catItems.map(item => {
                     const e = parseFloat(item.expected) || 0;
                     const a = parseFloat(item.actual) || 0;
                     cExp += e; cAct += a;
-                    return `<tr><td>${item.name}</td><td>${e}</td><td>${a}</td><td style="text-align:left"><span onclick="openItemModal(${item.id})">✏️</span> <span style="color:red; margin-right:8px" onclick="deleteItem(${item.id})">✕</span></td></tr>`;
+                    return `<tr><td><input type="checkbox" class="custom-checkbox" onchange="togglePurchased(${item.id})" title="تم الشراء"></td><td>${item.name}</td><td>${e}</td><td>${a}</td><td style="text-align:left"><span onclick="openItemModal(${item.id})">✏️</span> <span style="color:red; margin-right:8px" onclick="deleteItem(${item.id})">✕</span></td></tr>`;
                 }).join('');
+                
+                // Add purchased items to totals
+                catPurchased.forEach(item => {
+                    cExp += parseFloat(item.expected) || 0;
+                    cAct += parseFloat(item.actual) || 0;
+                });
+                
                 gExp += cExp; gAct += cAct;
                 area.innerHTML += `
                     <div class="section">
                         <div class="section-title"><span>${cat}</span><span style="color:#64748b; font-size:0.8rem">${cAct} / ${cExp}</span></div>
-                        <div class="table-container"><table><thead><tr><th>الاسم</th><th>متوقع</th><th>فعلي</th><th></th></tr></thead><tbody>${rows || '<tr><td colspan="4" style="text-align:center; color:#94a3b8">فارغ</td></tr>'}</tbody></table></div>
+                        <div class="table-container"><table><thead><tr><th style="width:30px"></th><th>الاسم</th><th>متوقع</th><th>فعلي</th><th></th></tr></thead><tbody>${rows || '<tr><td colspan="5" style="text-align:center; color:#94a3b8">فارغ</td></tr>'}</tbody></table></div>
                     </div>`;
             });
+
+            // Purchased Section
+            if (purchasedItems.length > 0) {
+                const purchasedRows = purchasedItems.map(item => {
+                    const e = parseFloat(item.expected) || 0;
+                    const a = parseFloat(item.actual) || 0;
+                    return `<tr class="purchased-row"><td><input type="checkbox" class="custom-checkbox" checked onchange="unpurchaseItem(${item.id})" title="إلغاء التحديد"></td><td>${item.name}</td><td>${e}</td><td>${a}</td><td style="text-align:left"><span onclick="openItemModal(${item.id})">✏️</span> <span style="color:red; margin-right:8px" onclick="deleteItem(${item.id})">✕</span></td></tr>`;
+                }).join('');
+                
+                const purchasedTotal = purchasedItems.reduce((sum, i) => sum + (parseFloat(i.actual) || 0), 0);
+                
+                area.innerHTML += `
+                    <div class="purchased-section">
+                        <div class="purchased-header" onclick="togglePurchasedSection()">
+                            <h4><span>✓ تم شراؤها</span><span class="purchased-badge">${purchasedItems.length}</span></h4>
+                            <span><span style="color:#64748b; font-size:0.8rem; margin-left:0.5rem">${purchasedTotal} د.أ</span><span id="purchasedChevron" class="chevron">▼</span></span>
+                        </div>
+                        <div id="purchasedContent" class="purchased-content">
+                            <div class="table-container" style="border:none; border-radius:0;"><table><thead><tr><th style="width:30px"></th><th>الاسم</th><th>متوقع</th><th>فعلي</th><th></th></tr></thead><tbody>${purchasedRows}</tbody></table></div>
+                        </div>
+                    </div>`;
+            }
 
             area.innerHTML += `<div class="summary-card">
                 <div class="summary-item"><span class="summary-lbl">المتوقع</span><span class="summary-val">${gExp}</span></div>
@@ -148,73 +370,149 @@
             </div>`;
         }
 
-        // Logic (Items & Cats)
-        function openItemModal(id = null) {
-            document.getElementById('itemCatSelect').innerHTML = categories.map(c => `<option value="${c}">${c}</option>`).join('');
-            if(id) {
-                const i = items.find(x => x.id === id);
-                document.getElementById('editItemId').value = i.id;
-                document.getElementById('itemName').value = i.name;
-                document.getElementById('itemExp').value = i.expected;
-                document.getElementById('itemAct').value = i.actual;
-                document.getElementById('itemCatSelect').value = i.category;
-            } else {
-                document.getElementById('editItemId').value = ''; document.getElementById('itemName').value = '';
-                document.getElementById('itemExp').value = ''; document.getElementById('itemAct').value = '';
-            }
-            document.getElementById('itemModal').style.display = 'flex';
+      // Logic (Items & Cats)
+      function openItemModal(id = null) {
+        document.getElementById("itemCatSelect").innerHTML = categories
+          .map((c) => `<option value="${c}">${c}</option>`)
+          .join("");
+        if (id) {
+          const i = items.find((x) => x.id === id);
+          document.getElementById("editItemId").value = i.id;
+          document.getElementById("itemName").value = i.name;
+          document.getElementById("itemExp").value = i.expected;
+          document.getElementById("itemAct").value = i.actual;
+          document.getElementById("itemCatSelect").value = i.category;
+        } else {
+          document.getElementById("editItemId").value = "";
+          document.getElementById("itemName").value = "";
+          document.getElementById("itemExp").value = "";
+          document.getElementById("itemAct").value = "";
         }
+        document.getElementById("itemModal").style.display = "flex";
+      }
 
-        function saveItem() {
-            const id = document.getElementById('editItemId').value;
-            const data = {
-                id: id ? parseInt(id) : Date.now(),
-                category: document.getElementById('itemCatSelect').value,
-                name: document.getElementById('itemName').value,
-                expected: document.getElementById('itemExp').value,
-                actual: document.getElementById('itemAct').value
-            };
-            if(!data.name) return;
-            if(id) items = items.map(i => i.id == id ? data : i);
-            else items.push(data);
-            closeModal('itemModal'); saveData();
+      function saveItem() {
+        const id = document.getElementById("editItemId").value;
+        const data = {
+          id: id ? parseInt(id) : Date.now(),
+          category: document.getElementById("itemCatSelect").value,
+          name: document.getElementById("itemName").value,
+          expected: document.getElementById("itemExp").value,
+          actual: document.getElementById("itemAct").value,
+        };
+        if (!data.name) return;
+        if (id) items = items.map((i) => (i.id == id ? data : i));
+        else items.push(data);
+        closeModal("itemModal");
+        saveData();
+      }
+
+      function deleteItem(id) {
+        if (confirm("حذف؟")) {
+          items = items.filter((i) => i.id !== id);
+          saveData();
         }
+      }
 
-        function deleteItem(id) { if(confirm('حذف؟')) { items = items.filter(i => i.id !== id); saveData(); } }
-
-        function openCatModal() {
-            document.getElementById('catListDisplay').innerHTML = categories.map((c, idx) => `
+      function openCatModal() {
+        document.getElementById("catListDisplay").innerHTML = categories
+          .map(
+            (c, idx) => `
                 <div style="display:flex; justify-content:space-between; padding:0.4rem 0; border-bottom:1px solid var(--border)">
                     <span>${c}</span><div><span onclick="renameCat(${idx})">✏️</span> <span style="color:red; margin-right:8px" onclick="deleteCat(${idx})">✕</span></div>
-                </div>`).join('');
-            document.getElementById('catModal').style.display = 'flex';
-        }
+                </div>`,
+          )
+          .join("");
+        document.getElementById("catModal").style.display = "flex";
+      }
 
-        function addNewCategory() {
-            const val = document.getElementById('newCatName').value;
-            if(val && !categories.includes(val)) { categories.push(val); document.getElementById('newCatName').value = ''; openCatModal(); saveData(); }
+      function addNewCategory() {
+        const val = document.getElementById("newCatName").value;
+        if (val && !categories.includes(val)) {
+          categories.push(val);
+          document.getElementById("newCatName").value = "";
+          openCatModal();
+          saveData();
         }
+      }
 
-        function renameCat(idx) {
-            const old = categories[idx];
-            const newVal = prompt("الاسم الجديد:", old);
-            if(newVal && newVal !== old) {
-                categories[idx] = newVal;
-                items.forEach(i => { if(i.category === old) i.category = newVal; });
-                openCatModal(); saveData();
-            }
+      function renameCat(idx) {
+        const old = categories[idx];
+        const newVal = prompt("الاسم الجديد:", old);
+        if (newVal && newVal !== old) {
+          categories[idx] = newVal;
+          items.forEach((i) => {
+            if (i.category === old) i.category = newVal;
+          });
+          openCatModal();
+          saveData();
         }
+      }
 
-        function deleteCat(idx) { if(confirm('حذف القسم؟')) { categories.splice(idx, 1); openCatModal(); saveData(); } }
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-
-        // --- PWA Service Worker Registration ---
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js').then(reg => console.log('SW Registered')).catch(err => console.log('SW Error', err));
-            });
+      function deleteCat(idx) {
+        if (confirm("حذف القسم؟")) {
+          categories.splice(idx, 1);
+          openCatModal();
+          saveData();
         }
-        render();
+      }
+
+      function togglePurchased(id) {
+        const item = items.find(i => i.id === id);
+        if (!item) return;
+        
+        const currentActual = item.actual || item.expected || '';
+        const price = prompt('بكم اشتريتها؟', currentActual);
+        
+        if (price === null) return; // User cancelled
+        
+        const numPrice = parseFloat(price);
+        if (isNaN(numPrice)) {
+          alert('الرجاء إدخال رقم صحيح');
+          return;
+        }
+        
+        items = items.map(i => {
+          if (i.id === id) {
+            i.purchased = true;
+            i.actual = numPrice;
+          }
+          return i;
+        });
+        saveData();
+      }
+
+      function unpurchaseItem(id) {
+        if (confirm('إلغاء تحديد هذه القطعة كمشتراة؟')) {
+          items = items.map(i => {
+            if (i.id === id) i.purchased = false;
+            return i;
+          });
+          saveData();
+        }
+      }
+
+      function togglePurchasedSection() {
+        const content = document.getElementById('purchasedContent');
+        const chevron = document.getElementById('purchasedChevron');
+        content.classList.toggle('show');
+        chevron.classList.toggle('open');
+      }
+
+      function closeModal(id) {
+        document.getElementById(id).style.display = "none";
+      }
+
+      // --- PWA Service Worker Registration ---
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("sw.js")
+            .then((reg) => console.log("SW Registered"))
+            .catch((err) => console.log("SW Error", err));
+        });
+      }
+      render();
     </script>
-</body>
+  </body>
 </html>
