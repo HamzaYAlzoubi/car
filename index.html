@@ -225,6 +225,30 @@
       .chevron.open {
         transform: rotate(180deg);
       }
+
+      /* Drag and Drop Styles */
+      tr.draggable {
+        cursor: grab;
+      }
+      tr.draggable:active {
+        cursor: grabbing;
+      }
+      tr.dragging {
+        opacity: 0.4;
+        background: var(--muted);
+      }
+      tr.drag-over {
+        border-top: 2px solid var(--primary);
+      }
+      .drag-handle {
+        cursor: grab;
+        opacity: 0.4;
+        user-select: none;
+        padding-right: 4px;
+      }
+      .drag-handle:hover {
+        opacity: 1;
+      }
     </style>
   </head>
   <body>
@@ -315,17 +339,17 @@
             let gExp = 0, gAct = 0;
             let purchasedItems = [];
 
-            categories.forEach(cat => {
+            categories.forEach((cat, catIndex) => {
                 const catItems = items.filter(i => i.category === cat && !i.purchased);
                 const catPurchased = items.filter(i => i.category === cat && i.purchased);
                 purchasedItems = purchasedItems.concat(catPurchased);
                 
                 let cExp = 0, cAct = 0;
-                let rows = catItems.map(item => {
+                let rows = catItems.map((item, idx) => {
                     const e = parseFloat(item.expected) || 0;
                     const a = parseFloat(item.actual) || 0;
                     cExp += e; cAct += a;
-                    return `<tr><td><input type="checkbox" class="custom-checkbox" onchange="togglePurchased(${item.id})" title="تم الشراء"></td><td>${item.name}</td><td>${e}</td><td>${a}</td><td style="text-align:left"><span onclick="openItemModal(${item.id})">✏️</span> <span style="color:red; margin-right:8px" onclick="deleteItem(${item.id})">✕</span></td></tr>`;
+                    return `<tr class="draggable" draggable="true" data-id="${item.id}" data-category="${cat}" ondragstart="handleDragStart(event)" ondragend="handleDragEnd(event)" ondragover="handleDragOver(event)" ondrop="handleDrop(event)"><td><span class="drag-handle">≡</span><input type="checkbox" class="custom-checkbox" onchange="togglePurchased(${item.id})" title="تم الشراء"></td><td>${item.name}</td><td>${e}</td><td>${a}</td><td style="text-align:left"><span onclick="openItemModal(${item.id})">✏️</span> <span style="color:red; margin-right:8px" onclick="deleteItem(${item.id})">✕</span></td></tr>`;
                 }).join('');
                 
                 // Add purchased items to totals
@@ -338,7 +362,7 @@
                 area.innerHTML += `
                     <div class="section">
                         <div class="section-title"><span>${cat}</span><span style="color:#64748b; font-size:0.8rem">${cAct} / ${cExp}</span></div>
-                        <div class="table-container"><table><thead><tr><th style="width:30px"></th><th>الاسم</th><th>متوقع</th><th>فعلي</th><th></th></tr></thead><tbody>${rows || '<tr><td colspan="5" style="text-align:center; color:#94a3b8">فارغ</td></tr>'}</tbody></table></div>
+                        <div class="table-container"><table><thead><tr><th style="width:50px"></th><th>الاسم</th><th>متوقع</th><th>فعلي</th><th></th></tr></thead><tbody class="droppable" data-category="${cat}">${rows || '<tr><td colspan="5" style="text-align:center; color:#94a3b8">فارغ</td></tr>'}</tbody></table></div>
                     </div>`;
             });
 
@@ -497,6 +521,61 @@
         const chevron = document.getElementById('purchasedChevron');
         content.classList.toggle('show');
         chevron.classList.toggle('open');
+      }
+
+      // --- Drag and Drop ---
+      let draggedItem = null;
+
+      function handleDragStart(e) {
+        draggedItem = e.target.closest('tr');
+        draggedItem.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', draggedItem.dataset.id);
+      }
+
+      function handleDragEnd(e) {
+        if (draggedItem) {
+          draggedItem.classList.remove('dragging');
+          document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+          draggedItem = null;
+        }
+      }
+
+      function handleDragOver(e) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        const targetRow = e.target.closest('tr');
+        if (targetRow && targetRow !== draggedItem && targetRow.classList.contains('draggable')) {
+          document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+          targetRow.classList.add('drag-over');
+        }
+      }
+
+      function handleDrop(e) {
+        e.preventDefault();
+        const targetRow = e.target.closest('tr');
+        if (!targetRow || !draggedItem || targetRow === draggedItem) return;
+        
+        const draggedId = parseInt(draggedItem.dataset.id);
+        const targetId = parseInt(targetRow.dataset.id);
+        const category = draggedItem.dataset.category;
+        
+        // Get category items (not purchased)
+        const catItems = items.filter(i => i.category === category && !i.purchased);
+        const draggedIdx = catItems.findIndex(i => i.id === draggedId);
+        const targetIdx = catItems.findIndex(i => i.id === targetId);
+        
+        if (draggedIdx === -1 || targetIdx === -1) return;
+        
+        // Reorder in array
+        const [movedItem] = catItems.splice(draggedIdx, 1);
+        catItems.splice(targetIdx, 0, movedItem);
+        
+        // Rebuild items array with new order
+        const otherItems = items.filter(i => i.category !== category || i.purchased);
+        items = [...catItems, ...otherItems];
+        
+        saveData();
       }
 
       function closeModal(id) {
